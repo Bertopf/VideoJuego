@@ -44,8 +44,8 @@ class Game {
 
 class Personaje {
     constructor() {
-        this.x = 400;
-        this.y = 300;
+        this.x = 400
+        this.y = 800;
         this.width = 50;
         this.height = 50;
         this.velocidad = 10;
@@ -120,8 +120,9 @@ class Moneda {
         this.width = 30
         this.height = 30; 
         this.element = document.createElement("div");
-        this.actualizarPosicion(9);
+        this.actualizarPosicion();
         this.element.classList.add("moneda");
+        this.removeChild = ("moneda")
     }
 
     actualizarPosicion() {

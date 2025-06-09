@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+  background-image: url(imagenes/Espacio\ tiempo\ Perú.jpg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+}
+#game-container {
+  position: relative;
+  width: 800px;
+  height: 400px;
+  margin: 20px auto;
+  background: #a80f0f;
+  overflow: hidden;
+  border-radius: 30px;
+}
+
+.personaje {
+  position: absolute;
+  width: 10px;
+  height: 50px;
+  background-color: #525252;
+  border-radius: 20%;
+   box-shadow: 0 0 10px 2px rgb(255, 0, 0);
+  
+ 
+}
+
+.moneda {
+  position: absolute;
+  width: 90px;
+  height: 2px;
+  background-image: url(imagenes/marciano.jpg);
+  border-radius: 20%;
+  box-shadow: 0 0 10px 2px rgba(51, 255, 0, 0.8);
+  padding-top: 4;
+}
+
+#puntos {
+  font-size: 20px;
+  text-align: center;
+  margin: 10px 0;
+  color: antiquewhite;
+}
+
+
+
+
+
+h1 {
+  color: #a80f0f;
+}
+
+#juego {
+  width: 600px;
+  height: 400px;
+  background: #222;
+  position: relative;
+  overflow: hidden;
+}
+
+.enemigo {
+  width: 50px;
+  height: 50px;
+  background: red;
+  position: absolute;
+  top: 100px;
+  left: 0;
+}

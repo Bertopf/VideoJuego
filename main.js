@@ -13,7 +13,7 @@ class Game {
     this.personaje = new Personaje();
     this.container.appendChild(this.personaje.element);
 
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 7; i++) {
       const moneda = new Moneda();
       this.monedas.push(moneda);
       this.container.appendChild(moneda.element);
@@ -30,7 +30,7 @@ class Game {
     setInterval(() => {
       this.monedas = this.monedas.filter((moneda) => {
         if (this.personaje.colisionaCon(moneda)) {
-          moneda.recibirDaño(1); // Resta 1 punto de vida
+          moneda.recibirDaño(2); // Resta 1 punto de vida
           if (moneda.vida <= 0) {
             this.container.removeChild(moneda.element);
             this.container.removeChild(moneda.vidaBar);
@@ -40,7 +40,7 @@ class Game {
         }
         return true;
       });
-    }, 100);
+    }, 30);
   }
 
   actualizarPuntuacion(puntos) {
@@ -56,7 +56,7 @@ class Personaje {
     this.posicionInicialY = this.y;
     this.width = 50;
     this.height = 50;
-    this.velocidad = 100;
+    this.velocidad = 50;
     this.saltando = false;
     this.element = document.createElement("div");
     this.element.classList.add("personaje");
@@ -76,7 +76,7 @@ class Personaje {
 
   saltar() {
     this.saltando = true;
-    const alturaMaxima = this.y - 1000;
+    const alturaMaxima = this.y - 1100;
     const salto = setInterval(() => {
       if (this.y > alturaMaxima) {
         this.y -= 100;
@@ -91,7 +91,7 @@ class Personaje {
   caer() {
     const gravedad = setInterval(() => {
       if (this.y < this.posicionInicialY) {
-        this.y += 100;
+        this.y += 1000;
       } else {
         this.y = this.posicionInicialY;
         clearInterval(gravedad);
@@ -150,7 +150,7 @@ class Moneda {
 }
 
 
- class Pistola {
+ class Nave {
   constructor() {
     this.x = 400;
     this.y = 800;

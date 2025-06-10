@@ -1,5 +1,5 @@
 class Game {
- constructor() {
+  constructor() {
     this.container = document.getElementById("game-container");
     this.personaje = null;
     this.monedas = [];
@@ -7,134 +7,171 @@ class Game {
     this.crearEscenario();
     this.agregarEventos();
     this.puntosElement = document.getElementById("puntos");
- }
+  }
 
- crearEscenario() {
+  crearEscenario() {
     this.personaje = new Personaje();
     this.container.appendChild(this.personaje.element);
-    for (let i = 0; i < 20; i++) {
-        const moneda = new Moneda();
-        this.monedas.push(moneda);
-        this.container.appendChild(moneda.element);
-    }
- }
 
- agregarEventos() {
+    for (let i = 0; i < 20; i++) {
+      const moneda = new Moneda();
+      this.monedas.push(moneda);
+      this.container.appendChild(moneda.element);
+      this.container.appendChild(moneda.vidaBar);
+    }
+  }
+
+  agregarEventos() {
     window.addEventListener("keydown", (e) => this.personaje.mover(e));
     this.checkColisiones();
+  }
 
- }
-
- checkColisiones() {
-     setInterval(() => {
-      this.monedas.forEach((moneda, index) => {
+  checkColisiones() {
+    setInterval(() => {
+      this.monedas = this.monedas.filter((moneda) => {
         if (this.personaje.colisionaCon(moneda)) {
-          this.container.removeChild(moneda.element);
-          this.monedas.splice(index, 2);
-          this.actualizarPuntuacion(10);
+          moneda.recibirDaño(1); // Resta 1 punto de vida
+          if (moneda.vida <= 0) {
+            this.container.removeChild(moneda.element);
+            this.container.removeChild(moneda.vidaBar);
+            this.actualizarPuntuacion(10);
+            return false; // eliminar del array
+          }
         }
+        return true;
       });
     }, 100);
- }
- actualizarPuntuacion(puntos) {
+  }
+
+  actualizarPuntuacion(puntos) {
     this.puntuacion += puntos;
     this.puntosElement.textContent = `Puntos: ${this.puntuacion}`;
- }
+  }
 }
 
 class Personaje {
-    constructor() {
-        this.x = 400
-        this.y = 800;
-        this.width = 50;
-        this.height = 50;
-        this.velocidad = 10;
+  constructor() {
+    this.x = 400;
+    this.y = 800;
+    this.posicionInicialY = this.y;
+    this.width = 50;
+    this.height = 50;
+    this.velocidad = 100;
+    this.saltando = false;
+    this.element = document.createElement("div");
+    this.element.classList.add("personaje");
+    this.actualizarPosicion();
+  }
+
+  mover(evento) {
+    if (evento.key === "ArrowRight" && this.x + this.width < 1000) {
+      this.x += this.velocidad;
+    } else if (evento.key === "ArrowLeft" && this.x > 0) {
+      this.x -= this.velocidad;
+    } else if (evento.key === "ArrowUp" && !this.saltando) {
+      this.saltar();
+    }
+    this.actualizarPosicion();
+  }
+
+  saltar() {
+    this.saltando = true;
+    const alturaMaxima = this.y - 1000;
+    const salto = setInterval(() => {
+      if (this.y > alturaMaxima) {
+        this.y -= 100;
+      } else {
+        clearInterval(salto);
+        this.caer();
+      }
+      this.actualizarPosicion();
+    }, 20);
+  }
+
+  caer() {
+    const gravedad = setInterval(() => {
+      if (this.y < this.posicionInicialY) {
+        this.y += 100;
+      } else {
+        this.y = this.posicionInicialY;
+        clearInterval(gravedad);
         this.saltando = false;
-        this.element = document.createElement("div");
-        this.element.classList.add("personaje");
-        this.actualizarPosicion();
+      }
+      this.actualizarPosicion();
+    }, 20);
+  }
 
+  actualizarPosicion() {
+    this.element.style.left = `${this.x}px`;
+    this.element.style.top = `${this.y}px`;
+  }
 
-    }
-    mover(evento) {
-        if (evento.key === "ArrowRight") {
-            this.x += this.velocidad;
-        } else if (evento.key === "ArrowLeft") {
-            this.x -= this.velocidad;
-        } else if (evento.key === "ArrowUp") {
-            this.saltar();
-        }
-        this.actualizarPosicion(); 
-
-    }
-
-    saltar() {
-        this.saltando = true;
-        let  alturaMaxima = this.y - 250;
-        const salto = setInterval(() => {
-            if (this.y > alturaMaxima) {
-                this.y -= 80;
-            }else{
-                clearInterval(salto);
-                this.caer();
-            }
-            this.actualizarPosicion();
-    },20);
-    }
-
-    caer() {
-        const gravedad = setInterval(() => {
-            if (this.y < 300) {
-                this.y += 80;
-            } else {
-                clearInterval(gravedad);
-                 this.saltando = false;              
-
-            }
-            this.actualizarPosicion();
-    },20)
-
-    }
-    actualizarPosicion() {
-        this.element.style.left = `${this.x}px`;
-        this.element.style.top = `${this.y}px`;
-    }
-     
-    colisionaCon(objeto) {
+  colisionaCon(objeto) {
     return (
       this.x < objeto.x + objeto.width &&
       this.x + this.width > objeto.x &&
       this.y < objeto.y + objeto.height &&
       this.y + this.height > objeto.y
-      
     );
   }
 }
 
-
-
 class Moneda {
-    constructor() {
-        this.x = Math.random() * 900 + 90;
-        this.y = Math.random() * 100 + 0;
-        this.width = 30
-        this.height = 30; 
-        this.element = document.createElement("div");
-        this.actualizarPosicion();
-        this.element.classList.add("moneda");
-        this.removeChild = ("moneda")
-    }
+  constructor() {
+    this.x = Math.random() * 900 + 30;
+    this.y = Math.random() * 300 + 30;
+    this.width = 30;
+    this.height = 30;
+    this.vida = 3;
+    this.element = document.createElement("div");
+    this.vidaBar = document.createElement("div");
+    this.element.classList.add("moneda");
+    this.vidaBar.classList.add("vida-bar");
+    this.actualizarPosicion();
+    this.actualizarVida();
+  }
 
-    actualizarPosicion() {
-        this.element.style.left = `${this.x}px`;
-        this.element.style.top = `${this.y}px`;
-    }
-    
+  actualizarPosicion() {
+    this.element.style.left = `${this.x}px`;
+    this.element.style.top = `${this.y}px`;
+    this.vidaBar.style.left = `${this.x}px`;
+    this.vidaBar.style.top = `${this.y - 10}px`;
+  }
+
+  recibirDaño(dano) {
+    this.vida -= dano;
+    this.actualizarVida();
+  }
+
+  actualizarVida() {
+    this.vidaBar.style.width = `${(this.vida / 3) * 30}px`;
+    this.vidaBar.style.backgroundColor = this.vida === 1 ? "red" : this.vida === 2 ? "orange" : "green";
+  }
 }
 
 
+ class Pistola {
+  constructor() {
+    this.x = 400;
+    this.y = 800;
+    this.posicionInicialY = this.y;
+    this.width = 50;
+    this.height = 50;
+    this.velocidad = 100;
+    this.saltando = false;
+    this.element = document.createElement("div");
+    this.element.classList.add("personaje");
+    this.actualizarPosicion();
+  }
 
+  mover(evento) {
+    if (evento.key === "ArrowRight" && this.x + this.width < 1000) {
+      this.x += this.velocidad;
+    } else if (evento.key === "ArrowLeft" && this.x > 0) {
+      this.x -= this.velocidad;
+    }
 
+}
+ }
 
-
-const juego = new Game(); 
+const juego = new Game();

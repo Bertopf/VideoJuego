@@ -23,7 +23,7 @@ body {
   position: absolute;
   width: 10px;
   height: 50px;
-  background-color: #525252;
+  background-image: url(imagenes/bala\ sin\ fondo.png);
   border-radius: 20%;
    box-shadow: 0 0 10px 2px rgb(255, 0, 0);
   
@@ -34,10 +34,10 @@ body {
   position: absolute;
   width: 20px;
   height: 20px;
-  background-image: url(imagenes/marciano.jpg);
+  background-image: url(imagenes/bicho.png);
   border-radius: 20%;
-  box-shadow: 0 0 10px 2px rgba(51, 255, 0, 0.8);
   padding-top: 10;
+  background-size: contain
 }
 
 #puntos {
@@ -63,11 +63,37 @@ h1 {
   overflow: hidden;
 }
 
-.enemigo {
-  width: 50px;
-  height: 50px;
-  background: red;
-  position: absolute;
-  top: 100px;
-  left: 0;
-}
+
+
+
+    #game-container {
+      width: 1000px;
+      height: 900px;
+      background-color: lightblue;
+      position: relative;
+      overflow: hidden;
+    }
+    .personaje {
+      width: 10px;
+      height: 50px;
+    background-image: url(imagenes/bala\ sin\ fondo.png);
+      position: absolute;
+    }
+    .moneda {
+      width: 30px;
+      height: 30px;
+      
+      border-radius: 50%;
+      position: absolute;
+    }
+    .vida-bar {
+      position: absolute;
+      height: 5px;
+      background-color: green;
+      top: -8px;
+      left: 0;
+    }
+  
+    .Pistola {
+      background-image: url(imagenes/bala.jpg);
+    }

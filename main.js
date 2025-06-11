@@ -13,7 +13,7 @@ class Game {
     this.personaje = new Personaje();
     this.container.appendChild(this.personaje.element);
 
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < 5; i++) {
       const moneda = new Moneda();
       this.monedas.push(moneda);
       this.container.appendChild(moneda.element);
@@ -40,7 +40,7 @@ class Game {
         }
         return true;
       });
-    }, 30);
+    }, 25);
   }
 
   actualizarPuntuacion(puntos) {
@@ -56,7 +56,7 @@ class Personaje {
     this.posicionInicialY = this.y;
     this.width = 50;
     this.height = 50;
-    this.velocidad = 50;
+    this.velocidad = 40;
     this.saltando = false;
     this.element = document.createElement("div");
     this.element.classList.add("personaje");
@@ -173,5 +173,13 @@ class Moneda {
 
 }
  }
+
+const musicaFondo = document.getElementById("musica-fondo");
+
+window.addEventListener("keydown", () => {
+  musicaFondo.volume = 0.5;
+  musicaFondo.play();
+}, { once: true });
+
 
 const juego = new Game();

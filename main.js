@@ -229,16 +229,5 @@ class Moneda {
 }
  }
 
-const musicaFondo = document.getElementById("musica-fondo");
-
-window.addEventListener("keydown", () => {
-  musicaFondo.volume = 0.5;
-  musicaFondo.play();
-}, { once: true });
-
-
-
-    
-
 
 const juego = new Game();

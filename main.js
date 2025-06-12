@@ -7,13 +7,17 @@ class Game {
     this.crearEscenario();
     this.agregarEventos();
     this.puntosElement = document.getElementById("puntos");
-    this.tiempoRestante = 30; // 30 segundos
+    this.tiempoRestante = 15; 
     this.temporizadorInterval = null;
     this.juegoTerminado = false;
     this.puntosElement = document.getElementById("puntos");
     this.tiempoElement = document.getElementById("tiempo");
     this.gameOverElement = document.getElementById("game-over");
     this.iniciarTemporizador();
+    this.reiniciarBtn = document.getElementById("reiniciar");
+    this.puntajeFinal = document.getElementById("puntaje-final");
+    this.reiniciarBtn.addEventListener("click", () => location.reload());
+
 
   }
 
@@ -28,19 +32,20 @@ class Game {
     }, 1000);
   }
 
-   finalizarJuego() {
-    clearInterval(this.temporizadorInterval);
-    this.juegoTerminado = true;
-    this.tiempoElement.textContent = "Tiempo: 0";
-    this.gameOverElement.style.display = "block";
-    window.removeEventListener("keydown", this.controladorTeclas); // opcional
-  }
+  finalizarJuego() {
+  clearInterval(this.temporizadorInterval);
+  this.juegoTerminado = true;
+  this.tiempoElement.textContent = "Tiempo: 0";
+  this.gameOverElement.style.display = "block";
+  this.puntajeFinal.textContent = `Tu puntaje final fue: ${this.puntuacion}`;
+  window.removeEventListener("keydown", this.controladorTeclas);
+}
 
   crearEscenario() {
     this.personaje = new Personaje();
     this.container.appendChild(this.personaje.element);
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 40; i++) {
       const moneda = new Moneda();
       this.monedas.push(moneda);
       this.container.appendChild(moneda.element);
@@ -50,8 +55,16 @@ class Game {
 
   agregarEventos() {
     window.addEventListener("keydown", (e) => this.personaje.mover(e));
+    this.controladorTeclas = (e) => {
+    if (!this.juegoTerminado) {
+      this.personaje.mover(e);
+    }
+  };
+    window.addEventListener("keydown", this.controladorTeclas);
     this.checkColisiones();
   }
+
+  
   
 
   checkColisiones() {

@@ -100,3 +100,14 @@ h1 {
 #game-over {
   margin-top: 20px;
 }
+#game-over {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0,0,0,0.7);
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  z-index: 9;
+}

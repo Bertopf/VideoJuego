@@ -91,4 +91,12 @@ h1 {
       left: 0;
     }
 
+    #tiempo {
+  font-size: 20px;
+  margin: 10px 0;
+  color: lightgreen;
+}
 
+#game-over {
+  margin-top: 20px;
+}

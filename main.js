@@ -7,6 +7,33 @@ class Game {
     this.crearEscenario();
     this.agregarEventos();
     this.puntosElement = document.getElementById("puntos");
+    this.tiempoRestante = 30; // 30 segundos
+    this.temporizadorInterval = null;
+    this.juegoTerminado = false;
+    this.puntosElement = document.getElementById("puntos");
+    this.tiempoElement = document.getElementById("tiempo");
+    this.gameOverElement = document.getElementById("game-over");
+    this.iniciarTemporizador();
+
+  }
+
+  iniciarTemporizador() {
+    this.temporizadorInterval = setInterval(() => {
+      if (this.tiempoRestante > 0) {
+        this.tiempoRestante--;
+        this.tiempoElement.textContent = `Tiempo: ${this.tiempoRestante}`;
+      } else {
+        this.finalizarJuego();
+      }
+    }, 1000);
+  }
+
+   finalizarJuego() {
+    clearInterval(this.temporizadorInterval);
+    this.juegoTerminado = true;
+    this.tiempoElement.textContent = "Tiempo: 0";
+    this.gameOverElement.style.display = "block";
+    window.removeEventListener("keydown", this.controladorTeclas); // opcional
   }
 
   crearEscenario() {
@@ -25,6 +52,7 @@ class Game {
     window.addEventListener("keydown", (e) => this.personaje.mover(e));
     this.checkColisiones();
   }
+  
 
   checkColisiones() {
     setInterval(() => {
@@ -180,6 +208,10 @@ window.addEventListener("keydown", () => {
   musicaFondo.volume = 0.5;
   musicaFondo.play();
 }, { once: true });
+
+
+
+    
 
 
 const juego = new Game();

@@ -104,6 +104,19 @@ class Personaje {
     this.actualizarPosicion();
   }
 
+  moverDireccion(direccion) {
+  if (direccion === "derecha") {
+    this.x += this.velocidad;
+  } else if (direccion === "izquierda") {
+    this.x -= this.velocidad;
+  } else if (direccion === "arriba") {
+    this.saltar();
+  }
+  this.actualizarPosicion();
+}
+
+
+
   mover(evento) {
     if (evento.key === "ArrowRight" && this.x + this.width < 1000) {
       this.x += this.velocidad;
@@ -113,6 +126,7 @@ class Personaje {
       this.saltar();
     }
     this.actualizarPosicion();
+    
   }
 
   saltar() {
